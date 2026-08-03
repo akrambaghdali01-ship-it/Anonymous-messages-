@@ -239,7 +239,7 @@ window.handleEmailRegister = async function(e) {
             uid: user.uid,
             name: name,
             handle: `@${email.split('@')[0]}`,
-            bio: "أهلاً بكم في حسابي للرسائل السرية! 💎✨",
+            bio: "واش عينيا أبعث(ي) مساج للكراش تاعك 👀",
             avatar: `https://api.dicebear.com/7.x/adventurer/svg?seed=${user.uid}`,
             theme: "default"
         };
@@ -334,7 +334,7 @@ window.saveCloudProfile = async function() {
         currentUser = { ...currentUser, ...updatedData };
         updateProfileUI();
         closeEditModal();
-        showToast("تم تحديث وحفظ الملف الشخصي بنجاح! ✨");
+        showToast("تم تحديث وحفظ  التعديلات بنجاح! ✨");
     } catch (error) {
         showToast("حدث خطأ أثناء حفظ التعديلات.");
     }
@@ -371,7 +371,7 @@ window.sendCloudMessage = async function() {
         document.getElementById('send-input').value = "";
         document.getElementById('image-preview').style.display = 'none';
         uploadedImageBase64 = null;
-        showToast("تم إرسال الصراحة بنجاح ! 🚀");
+        showToast("تم إرسال الرسالة بنجاح ! 🚀");
         switchTab('search', document.querySelectorAll('.nav-item')[1]);
     } catch (error) {
         showToast("حدث خطأ أثناء الإرسال.");
