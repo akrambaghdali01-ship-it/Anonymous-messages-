@@ -746,22 +746,21 @@ window.downloadStoryImage = async function() {
     showToast("جاري تجهيز الصورة... ⏳");
 
     try {
-        // نخلي العرض الأصلي كما هو
-        const originalWidth = storyElement.offsetWidth;
-
-        // نحدد الطول حسب المحتوى الحقيقي
-        const originalHeight = storyElement.scrollHeight;
+        // نخلي البطاقة بنفس الحجم اللي راهي باينة بيه
+        const rect = storyElement.getBoundingClientRect();
 
         const canvas = await html2canvas(storyElement, {
-            width: originalWidth,
-            height: originalHeight,
+            width: Math.round(rect.width),
+            height: Math.round(rect.height),
             scale: 4,
             useCORS: true,
             allowTaint: false,
             backgroundColor: null,
             logging: false,
-            windowWidth: originalWidth,
-            windowHeight: originalHeight
+
+            // مهم باش ما يبدلش قياسات البطاقة
+            scrollX: 0,
+            scrollY: 0
         });
 
         const link = document.createElement('a');
@@ -772,7 +771,7 @@ window.downloadStoryImage = async function() {
         link.click();
         link.remove();
 
-        showToast("تم حفظ الصورة بجودة عالية 📸✨");
+        showToast("تم حفظ الستوري بجودة عالية 📸✨");
 
     } catch (error) {
         console.error("خطأ إنشاء الصورة:", error);
