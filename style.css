@@ -640,3 +640,71 @@ body {
     background: rgba(255, 255, 255, 0.15);
     border-color: var(--accent-color);
 }
+/* ===== كروت الرسائل الواردة ===== */
+
+#messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+#messages-list > * {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 20px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* تأثير خفيف فوق الكارت */
+#messages-list > *::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--btn-gradient);
+    opacity: 0.8;
+}
+
+/* نص الرسالة */
+#messages-list > * p,
+#messages-list > * .message-text {
+    color: var(--text-main);
+    line-height: 1.7;
+    word-break: break-word;
+}
+
+/* معلومات الرسالة */
+#messages-list > * small {
+    color: var(--text-muted);
+}
+
+/* أزرار الرسالة */
+#messages-list .card-actions {
+    margin-top: 14px;
+}
+
+/* إذا كانت الرسالة مثبتة */
+#messages-list > *.pinned {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.06);
+}
+
+/* صورة داخل الرسالة */
+#messages-list > * img {
+    max-width: 100%;
+    border-radius: 14px;
+    margin-top: 10px;
+}
+
+/* تأثير الضغط */
+#messages-list > *:active {
+    transform: scale(0.99);
+    }
