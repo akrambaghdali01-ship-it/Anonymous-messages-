@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAREHNI💎 - صارحني</title>
+
+    <!-- FontAwesome الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- html2canvas لتحويل الستوري إلى صورة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- مكتبة EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <!-- رابط خط إيموجي الأيفون -->
+    <link href="https://cdn.jsdelivr.net/npm/apple-color-emoji-font@1.0.1/apple-color-emoji.css" rel="stylesheet">
+
+    <!-- خط تجوال من جوجل -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+
+    <!-- ملف التنسيقات الخارجي -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- أزرار التحكم في الأعلى (الألوان) -->
+    <div style="position: fixed; top: 15px; left: 15px; display: flex; gap: 10px; z-index: 9999;">
+        <!-- زر لوحة الألوان -->
+        <button class="color-palette-btn" style="position: static;" onclick="togglePaletteMenu()" title="تغيير الثيم">
+            <i class="fa-solid fa-palette"></i>
+        </button>
+    </div>
+    
+    <div id="palette-menu" class="palette-menu" style="left: 15px; top: 65px;">
+        <!-- أول 4 ألوان أساسية فقط -->
+        <div class="color-dot dot-purple" title="بنفسجي" onclick="changePalette('default')"></div>
+        <div class="color-dot dot-cyber" title="سايبر" onclick="changePalette('cyber')"></div>
+        <div class="color-dot dot-emerald" title="زمردي" onclick="changePalette('emerald')"></div>
+        <div class="color-dot dot-sunset" title="غروب" onclick="changePalette('sunset')"></div>
+        
+        <!-- زر عرض المزيد -->
+        <button class="more-palettes-btn" title="عرض كافة الألوان" onclick="openPaletteModal()">
+            <i class="fa-solid fa-ellipsis"></i>
+        </button>
+    </div>
+
+    <!-- نافذة (Modal) اختيار كل الثيمات الأكبر -->
+    <div id="palette-modal" class="modal">
+        <div class="glass-card" style="width: 100%; max-width: 360px; text-align: center; margin: auto;">
+            <h3 style="margin-bottom: 15px; font-size: 18px;">اختر ثيم التطبيق 🎨</h3>
+            
+            <div class="full-palettes-grid">
+                <div class="palette-item" onclick="changePalette('default')"><span class="color-dot dot-purple"></span> بنفسجي</div>
+                <div class="palette-item" onclick="changePalette('cyber')"><span class="color-dot dot-cyber"></span> سايبر</div>
+                <div class="palette-item" onclick="changePalette('emerald')"><span class="color-dot dot-emerald"></span> زمردي</div>
+                <div class="palette-item" onclick="changePalette('sunset')"><span class="color-dot dot-sunset"></span> غروب</div>
+                <div class="palette-item" onclick="changePalette('pink')"><span class="color-dot dot-pink"></span> وردي</div>
+                <div class="palette-item" onclick="changePalette('crimson')"><span class="color-dot dot-crimson"></span> عنابي</div>
+                <div class="palette-item" onclick="changePalette('skyblue')"><span class="color-dot dot-skyblue"></span> سماوي</div>
+                <div class="palette-item" onclick="changePalette('golden')"><span class="color-dot dot-golden"></span> ذهبي</div>
+                <div class="palette-item" onclick="changePalette('neongreen')"><span class="color-dot dot-neongreen"></span> أخضر نيون</div>
+                <div class="palette-item" onclick="changePalette('neonpurple')"><span class="color-dot dot-neonpurple"></span> بنفسجي نيون</div>
+                <div class="palette-item" onclick="changePalette('oceandeep')"><span class="color-dot dot-oceandeep"></span> محيطي</div>
+                <div class="palette-item" onclick="changePalette('mocha')"><span class="color-dot dot-mocha"></span> موكا</div>
+                <div class="palette-item" onclick="changePalette('berry')"><span class="color-dot dot-berry"></span> توتي</div>
+                <div class="palette-item" onclick="changePalette('midnight')"><span class="color-dot dot-midnight"></span> ليلي</div>
+                <div class="palette-item" onclick="changePalette('lime')"><span class="color-dot dot-lime"></span> ليموني</div>
+            </div>
+
+            <button class="btn-main btn-secondary" style="margin-top: 15px;" onclick="closePaletteModal()">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- الإشعارات السريعة (Toast) -->
+    <div id="toast" class="toast">
+        <span id="toast-text">تمت العملية بنجاح!</span>
+    </div>
+
+    <div class="container">
+        
+        <!-- صفحة المصادقة وتسجيل الدخول -->
+        <div id="view-auth" class="app-view active">
+            <div class="glass-card">
+                <div class="auth-switch-tabs">
+                    <button type="button" id="tab-login-btn" class="auth-tab-btn active" onclick="switchAuthMode('login')">تسجيل الدخول</button>
+                    <button type="button" id="tab-reg-btn" class="auth-tab-btn" onclick="switchAuthMode('register')">حساب جديد</button>
+                </div>
+
+                <div class="profile-header" style="margin-bottom: 15px;">
+                    <i class="fa-solid fa-gem" style="font-size: 38px; color: rgba(255,255,255,0.9); margin-bottom: 5px;"></i>
+                    <h1 class="user-name" style="font-size: 18px;">صارحني</h1>
+                </div>
+
+                <!-- نموذج تسجيل الدخول -->
+                <form id="form-login" onsubmit="handleEmailLogin(event)">
+                    <input type="email" id="login-email" class="glass-input" placeholder="البريد الإلكتروني" required>
+                    <input type="password" id="login-password" class="glass-input" placeholder="كلمة المرور" required>
+                    
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                        <button type="submit" class="btn-main" style="flex: 1; margin:0;">
+                            <i class="fa-solid fa-right-to-bracket"></i> دخول
+                        </button>
+                    </div>
+                </form>
+
+                <!-- نموذج إنشاء حساب جديد -->
+                <form id="form-register" style="display: none;" onsubmit="handleEmailRegister(event)">
+                    <input type="text" id="reg-name" class="glass-input" placeholder="الاسم الكامل" required>
+                    <input type="email" id="reg-email" class="glass-input" placeholder="البريد الإلكتروني" required>
+                    <input type="password" id="reg-password" class="glass-input" placeholder="كلمة المرور (6 أحرف على الأقل)" required>
+                    <button type="submit" class="btn-main">
+                        <i class="fa-solid fa-user-plus"></i> إنشاء حساب جديد وإرسال الرمز ✉️
+                    </button>
+                </form>
+
+                <div style="margin: 15px 0; border-top: 1px solid var(--glass-border); text-align: center; position: relative;">
+                    <span style="background: rgba(15, 23, 42, 0.8); padding: 0 10px; position: relative; top: -10px; font-size: 11px; color: var(--text-sub);">أو</span>
+                </div>
+
+                <!-- زر جوجل السحابي -->
+                <button id="google-login-btn" class="btn-main google-btn" type="button" style="width: 100%;">
+                    <i class="fa-brands fa-google" style="color: #ea4335;"></i> المتابعة بحساب جوجل
+                </button>
+            </div>
+        </div>
+
+        <!-- واجهة الرسائل الواردة -->
+        <div id="view-inbox" class="app-view">
+            <div class="profile-header">
+                <img id="display-avatar" src="" class="avatar">
+                <h1 id="display-name" class="user-name">اسم المستخدم</h1>
+                <p id="display-handle" class="user-handle">@username</p>
+                <p id="display-bio" class="user-bio">السيرة الذاتية ✨</p>
+            </div>
+
+            <button class="btn-main" style="margin-bottom: 20px;" onclick="copyShareLink()">
+                <i class="fa-solid fa-link"></i> نسخ رابط صراحة الخاص بي
+            </button>
+
+            <h3 style="margin-bottom: 15px; font-size: 17px;">الرسائل السرية الواردة أونلاين 🔒</h3>
+            <div id="messages-list"></div>
+        </div>
+
+        <!-- واجهة البحث السريعة -->
+        <div id="view-search" class="app-view">
+            <div class="profile-header">
+                <h2 style="font-size: 20px;">ابحث عن الأشخاص 🔍</h2>
+                <p class="user-handle">أرسل صراحة مجهولة لأصدقائك بسهولة</p>
+            </div>
+            <input type="text" id="search-input" class="glass-input" placeholder="اكتب اسم الحساب أو @username..." oninput="handleSearch()">
+            <div id="search-results"></div>
+        </div>
+
+        <!-- واجهة إرسال صراحة -->
+        <div id="view-send" class="app-view">
+            <div class="profile-header">
+                <img id="recipient-avatar" src="" class="avatar" style="width: 75px; height: 75px;">
+                <h2 id="recipient-name" style="font-size: 18px;">أرسل صراحة إلى...</h2>
+                <p id="recipient-handle" class="user-handle">@username</p>
+            </div>
+
+            <textarea id="send-input" class="glass-input" style="height: 120px; resize: none;" placeholder="أكتب رسالتك السرية بخصوصية كاملة..."></textarea>
+
+            <div class="upload-box" onclick="document.getElementById('file-input').click()">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size: 22px; margin-bottom: 5px;"></i>
+                <p style="font-size: 12px; color: var(--text-sub);">إرفاق صورة مع الرسالة (اختياري)</p>
+                <img id="image-preview" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; display: none; margin-top: 10px;">
+            </div>
+            <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+
+            <button id="sendBtn" class="btn-main" onclick="sendCloudMessage()">
+                <i class="fa-solid fa-paper-plane"></i> إرسال الصراحة الآن أونلاين
+            </button>
+        </div>
+
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <div id="nav-bar" class="nav-bar" style="display: none;">
+        <div class="nav-item active" onclick="switchTab('inbox', this)">
+            <i class="fa-solid fa-envelope-open-text"></i>
+            <span>رسائلي</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('search', this)">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>البحث</span>
+        </div>
+        <div class="nav-item" onclick="openEditModal()">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>بروفايلي</span>
+        </div>
+        <div class="nav-item" onclick="logout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>خروج</span>
+        </div>
+    </div>
+
+    <!-- 🔐 Modal إدخال رمز OTP المكون من 6 أرقام -->
+    <div id="otp-modal" class="modal" style="display: none;">
+        <div class="glass-card" style="width: 100%; max-width: 360px; text-align: center; margin: auto;">
+            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: #38bdf8; margin-bottom: 10px;"></i>
+            <h3 style="margin-bottom: 8px; font-size: 18px;">تأكيد البريد الإلكتروني ✉️</h3>
+            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 15px;">لقد أرسلنا رمز تأكيد يتكون من 6 أرقام إلى إيميلك. يرجى إدخاله هنا:</p>
+            
+            <input type="text" id="otp-input" class="glass-input" placeholder="123456" maxlength="6" style="text-align: center; font-size: 20px; letter-spacing: 4px; font-weight: bold;">
+            
+            <button class="btn-main" style="width: 100%; margin-top: 10px;" onclick="verifyOTP()">تأكيد ودخول 🚀</button>
+        </div>
+    </div>
+
+    <!-- Modal تعديل البروفايل -->
+    <div id="edit-modal" class="modal">
+        <div class="glass-card" style="width: 100%; max-width: 380px; margin: auto;">
+            <h3 style="margin-bottom: 12px; font-size: 18px;">تعديل الملف الشخصي ⚙️</h3>
+            
+            <div style="text-align: center; margin-bottom: 12px;">
+                <img id="edit-preview-avatar" src="" style="width: 75px; height: 75px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; margin-bottom: 8px;">
+                <div>
+                    <button class="action-btn" style="margin: 0 auto; font-size: 11px;" onclick="document.getElementById('avatar-file-input').click()">
+                        <i class="fa-solid fa-camera"></i> رفع صورة البروفايل من الجهاز
+                    </button>
+                    <input type="file" id="avatar-file-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+                </div>
+            </div>
+
+            <div style="font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">أو اختر أفتار جاهز سريعاً 🎭:</div>
+            <div class="presets-grid" id="presets-container"></div>
+
+            <input type="text" id="edit-name-input" class="glass-input" placeholder="الاسم الكامل">
+            <input type="text" id="edit-handle-input" class="glass-input" placeholder="اسم المستخدم">
+            <textarea id="edit-bio-input" class="glass-input" style="height: 70px; resize: none;" placeholder="السيرة الذاتية (Bio)..."></textarea>
+
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button class="btn-main" style="flex: 1;" onclick="saveCloudProfile()">حفظ التعديلات</button>
+                <button class="btn-main btn-secondary" style="width: 80px;" onclick="closeEditModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal الستوري -->
+    <div id="story-modal" class="modal">
+        <div id="story-card-element" class="story-card">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img id="story-user-avatar" src="" style="width: 40px; height: 40px; border-radius: 50%;">
+                <div>
+                    <div id="story-user-name" style="color: #fff; font-size: 13px; font-weight: bold;"></div>
+                    <div id="story-user-handle" style="color: rgba(255,255,255,0.7); font-size: 10px;"></div>
+                </div>
+            </div>
+
+            <div class="story-box">
+                <p id="story-text-content">نص الرسالة...</p>
+                <div id="story-reply-content" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed #ccc; font-size:13px; color:#4338ca; font-weight:bold;"></div>
+            </div>
+
+            <img id="story-img-content" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; display: none;">
+
+            <div style="text-align: center; font-size: 11px; color: rgba(255, 255, 255, 0.9); font-weight: bold;">
+            صارحني | SAREHNI 💎
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px; width: 100%; max-width: 340px;">
+            <button class="btn-main" style="flex: 1; font-size: 13px;" onclick="downloadStoryImage()">
+                <i class="fa-solid fa-download"></i> تنزيل صورة ⬇️
+            </button>
+            <button class="btn-main btn-secondary" style="width: 50px;" onclick="closeStoryModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ربط ملف الجافاسكريبت -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
