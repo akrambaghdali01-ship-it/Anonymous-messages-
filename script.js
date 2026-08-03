@@ -627,9 +627,30 @@ window.handleSearch = function() {
 
 window.openSendToUser = function(user) {
     selectedRecipient = user;
+
     document.getElementById('recipient-name').innerText = `أرسل صراحة إلى: ${user.name}`;
     document.getElementById('recipient-handle').innerText = user.handle;
     document.getElementById('recipient-avatar').src = user.avatar;
+
+    // ✨ إظهار Bio تاع الشخص
+    let bioElement = document.getElementById('recipient-bio');
+
+    // إذا خانة الـBio ماكانتش في HTML، ننشئوها وحدنا
+    if (!bioElement) {
+        bioElement = document.createElement('p');
+        bioElement.id = 'recipient-bio';
+        bioElement.className = 'user-bio';
+
+        const profileHeader = document.querySelector('#view-send .profile-header');
+
+        if (profileHeader) {
+            profileHeader.appendChild(bioElement);
+        }
+    }
+
+    // عرض Bio تاع المستخدم
+    bioElement.innerText = user.bio || "ما كتبش Bio حتى الآن ✨";
+
     switchTab('send', null);
 };
 
