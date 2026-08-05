@@ -344,33 +344,6 @@ window.handleEmailRegister = async function(e) {
 };
 
 
-// =====================================================
-// GOOGLE LOGIN
-// =====================================================
-
-document
-    .getElementById("google-login-btn")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            signInWithPopup(
-                auth,
-                provider
-            )
-            .catch(error => {
-
-                console.error(error);
-
-                showToast(
-                    "خطأ جوجل ❌"
-                );
-
-            });
-
-        }
-    );
-
 
 // =====================================================
 // AUTH STATE
