@@ -301,7 +301,7 @@ const randomNum = Math.floor(Math.random() * 10000);
             handle: `@user_${randomNum}`,
 
             bio: 
-                "واش عينيا أبعث(ي) مساج للكراش تاعك ولا حوس فالروشارش على (⭐) وبعثلو ميساج",
+                "Wach 3ainia b3at(i) message chbab ki ma nt(i).!😋",
 
             avatar:
                 `=${user.uid}`,
@@ -438,7 +438,8 @@ async function syncUserToDatabase(user) {
                 ),
 
             bio:
-                "واش عينيا أبعث(ي) مساج للكراش تاعك ولا حوس فالروشارش على (⭐) وبعثلو ميساج",
+                "Wach 3ainia b3at(i) message chbab ki ma nt(i).!😋",
+
 
             avatar:
                 user.photoURL ||
