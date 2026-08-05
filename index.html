@@ -300,12 +300,52 @@
                            placeholder="البريد الإلكتروني"
                            required>
 
-                    <input type="password"
-                           id="reg-password"
-                           class="glass-input"
-                           placeholder="كلمة المرور (6 أحرف على الأقل)"
-                           minlength="6"
-                           required>
+                    <!-- إنشاء الحساب -->
+
+<form id="form-register"
+      style="display:none;"
+      onsubmit="handleEmailRegister(event)">
+  
+
+    <input type="text"
+           id="reg-name"
+           class="glass-input"
+           placeholder="الاسم الكامل"
+           required>
+
+    <input type="email"
+           id="reg-email"
+           class="glass-input"
+           placeholder="البريد الإلكتروني"
+           required>
+
+    <!-- حقل كلمة المرور مع أيقونة إظهار وإخفاء -->
+    <div style="position: relative; margin-bottom: 15px;">
+        <input type="password"
+               id="reg-password"
+               class="glass-input"
+               placeholder="كلمة المرور (6 أحرف على الأقل)"
+               minlength="6"
+               required
+               style="margin-bottom: 0; padding-left: 45px;">
+               
+        <i class="fa-solid fa-eye toggle-password"
+           onclick="togglePasswordVisibility('reg-password', this)"
+           style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-sub);">
+        </i>
+    </div>
+
+    <button type="submit"
+            class="btn-main"
+            style="width:100%;">
+
+        <i class="fa-solid fa-user-plus"></i>
+
+        إنشاء حساب جديد
+
+    </button>
+
+</form>
 
                     <button type="submit"
                             class="btn-main"
