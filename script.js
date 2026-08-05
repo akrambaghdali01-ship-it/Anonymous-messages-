@@ -469,7 +469,7 @@ async function syncUserToDatabase(user) {
                 ),
 
             bio:
-                "واش عينيا أبعث(ي) مساج للكراش تاعك 👀",
+                "واش عينيا أبعث(ي) مساج للكراش تاعك ولا حوس فالروشارش على (⭐) وبعثلو ميساج",
 
             avatar:
                 user.photoURL ||
@@ -964,12 +964,23 @@ function(user) {
         avatar.src =
             user.avatar;
 
+if (bio) {
+    bio.innerText =
+        user.bio ||
+        "ما كتبش Bio حتى الآن ✨";
 
-    if (bio)
-        bio.innerText =
-            user.bio ||
-            "ما كتبش Bio حتى الآن ✨";
-
+    bio.style.padding = "12px 15px";
+    bio.style.marginTop = "10px";
+    bio.style.borderRadius = "16px";
+    bio.style.background = "rgba(255,255,255,0.08)";
+    bio.style.border = "1px solid rgba(255,255,255,0.12)";
+    bio.style.backdropFilter = "blur(14px)";
+    bio.style.webkitBackdropFilter = "blur(14px)";
+    bio.style.color = "var(--text-main)";
+    bio.style.fontSize = "13px";
+    bio.style.lineHeight = "1.6";
+    bio.style.textAlign = "center";
+}
 
     switchTab(
         "send",
@@ -2137,6 +2148,19 @@ function(
             );
 
     }
+    else if (
+    viewName === "premium"
+) {
+
+    document
+        .getElementById(
+            "view-premium"
+        )
+        ?.classList.add(
+            "active"
+        );
+
+}
 
 
     if (tabEl) {
@@ -3208,3 +3232,119 @@ function convertEmojisToApple(
     );
 
 }
+// =====================================================
+// PREMIUM
+// =====================================================
+
+let selectedPremiumPlan = null;
+
+
+window.selectPremiumPlan = function(plan) {
+
+    selectedPremiumPlan = plan;
+
+    document
+        .querySelectorAll(".premium-plan")
+        .forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+    const buttons =
+        document.querySelectorAll(".premium-plan");
+
+    if (plan === "week") {
+        buttons[0]?.classList.add("selected");
+    }
+
+    if (plan === "month") {
+        buttons[1]?.classList.add("selected");
+    }
+
+    showToast(
+        plan === "week"
+            ? "اخترت Premium أسبوعي 👑"
+            : "اخترت Premium شهري 👑"
+    );
+};
+
+
+window.activatePremium = function() {
+
+    if (!selectedPremiumPlan) {
+        showToast("اختار الباقة أولاً 👑");
+        return;
+    }
+
+    const duration =
+        selectedPremiumPlan === "week"
+            ? 7 * 24 * 60 * 60 * 1000
+            : 30 * 24 * 60 * 60 * 1000;
+
+    const premiumData = {
+        active: true,
+        plan: selectedPremiumPlan,
+        expiresAt: Date.now() + duration
+    };
+
+    // تجربة فقط، بلا Firebase
+    currentUser = {
+        ...currentUser,
+        premium: premiumData
+    };
+
+    // نخزنها مؤقتاً في الهاتف
+    localStorage.setItem(
+        "i3tarfli_premium_" + currentUser.uid,
+        JSON.stringify(premiumData)
+    );
+
+    showToast(
+        selectedPremiumPlan === "week"
+            ? "Premium التجريبي تفعل لمدة أسبوع 👑🔥"
+            : "Premium التجريبي تفعل لمدة شهر 👑🔥"
+    );
+
+    console.log("PREMIUM TEST:", premiumData);
+};
+function isPremiumActive() {
+
+    if (!currentUser)
+        return false;
+
+    let premium = currentUser.premium;
+
+    // إذا ماكانش في الذاكرة، نقراه من الهاتف
+    if (!premium) {
+
+        const saved = localStorage.getItem(
+            "i3tarfli_premium_" + currentUser.uid
+        );
+
+        if (saved) {
+            premium = JSON.parse(saved);
+            currentUser.premium = premium;
+        }
+    }
+
+    if (!premium?.active)
+        return false;
+
+    // انتهت المدة
+    if (Date.now() >= premium.expiresAt) {
+
+        currentUser.premium = {
+            ...premium,
+            active: false
+        };
+
+        localStorage.setItem(
+            "i3tarfli_premium_" + currentUser.uid,
+            JSON.stringify(currentUser.premium)
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
