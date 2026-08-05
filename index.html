@@ -283,27 +283,24 @@
 
                 <!-- إنشاء الحساب -->
 
-<!-- إنشاء الحساب -->
+                <form id="form-register"
+                      style="display:none;"
+                      onsubmit="handleEmailRegister(event)">
+                  
 
-<form id="form-register"
-      style="display:none;"
-      onsubmit="handleEmailRegister(event)">
-  
+                    <input type="text"
+                           id="reg-name"
+                           class="glass-input"
+                           placeholder="الاسم الكامل"
+                           required>
 
-    <input type="text"
-           id="reg-name"
-           class="glass-input"
-           placeholder="الاسم الكامل"
-           required>
+                    <input type="email"
+                           id="reg-email"
+                           class="glass-input"
+                           placeholder="البريد الإلكتروني"
+                           required>
 
-    <input type="email"
-           id="reg-email"
-           class="glass-input"
-           placeholder="البريد الإلكتروني"
-           required>
-
-    <!-- حقل كلمة المرور مع أيقونة إظهار وإخفاء -->
-    <div style="position: relative; margin-bottom: 15px;">
+ <div style="position: relative; margin-bottom: 15px;">
         <input type="password"
                id="reg-password"
                class="glass-input"
@@ -318,17 +315,20 @@
         </i>
     </div>
 
-    <button type="submit"
-            class="btn-main"
-            style="width:100%;">
+                    <button type="submit"
+                            class="btn-main"
+                            style="width:100%;">
 
-        <i class="fa-solid fa-user-plus"></i>
+                        <i class="fa-solid fa-user-plus"></i>
 
-        إنشاء حساب جديد
+                        إنشاء حساب جديد
 
-    </button>
+                    </button>
 
-</form>
+                </form>
+               </div>
+            </div>
+
 
 
         <!-- =====================================
